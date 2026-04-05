@@ -3,7 +3,8 @@ package models
 import "encoding/json"
 
 type RegisterByRefferCode struct {
-	TxHash string `json:"txHash"`
+	TxHash         string `json:"txHash"`
+	RefferedByCode string `json:"refferedByCode"`
 }
 
 func (r RegisterByRefferCode) String() string {
