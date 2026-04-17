@@ -14,3 +14,16 @@ func (o OrderPayEventData) String() string {
 	}
 	return string(res)
 }
+
+type OrderDetailRefundEventData struct {
+	OrderDetailId uint64 `json:"orderDetailId"`
+	TxHash        string `json:"txHash"`
+}
+
+func (o OrderDetailRefundEventData) String() string {
+	res, err := json.Marshal(o)
+	if err != nil {
+		return ""
+	}
+	return string(res)
+}
