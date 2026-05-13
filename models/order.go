@@ -3,8 +3,7 @@ package models
 import "encoding/json"
 
 type OrderPayEventData struct {
-	OrderId uint64 `json:"orderId"`
-	TxHash  string `json:"txHash"`
+	TxHash string `json:"txHash"`
 }
 
 func (o OrderPayEventData) String() string {
