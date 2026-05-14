@@ -60,7 +60,7 @@ type StoreGoodsAddReq struct {
 
 type StoreGoodsAttrValueAddReq struct {
 	GoodsId           uint64                     `json:"goodsId"  dc:"商品ID"`
-	Suk               string                     `json:"suk"  dc:"属性值索引"`
+	Sku               string                     `json:"sku"  dc:"属性值索引"`
 	Stock             int                        `json:"stock"  dc:"库存"`
 	Sales             int                        `json:"sales"  dc:"销量"`
 	Price             float64                    `json:"price"  dc:"价格"`
@@ -114,7 +114,7 @@ func (w Web3StoreGoodsAddEventData) String() string {
 type StoreGoodsAttrValueEditReq struct {
 	Id                uint64                     `json:"id"  dc:"商品属性值ID"`
 	GoodsId           uint64                     `json:"goodsId"  dc:"商品ID"`
-	Suk               string                     `json:"suk"  dc:"属性值索引"`
+	Sku               string                     `json:"sku"  dc:"属性值索引"`
 	Stock             int                        `json:"stock"  dc:"库存"`
 	Sales             int                        `json:"sales"  dc:"销量"`
 	Price             float64                    `json:"price"  dc:"价格"`
