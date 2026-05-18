@@ -26,3 +26,16 @@ func (o OrderDetailRefundEventData) String() string {
 	}
 	return string(res)
 }
+
+type OrderReceiptEventData struct {
+	TxHash  string `json:"txHash"`
+	OrderId uint64 `json:"orderId"`
+}
+
+func (o OrderReceiptEventData) String() string {
+	res, err := json.Marshal(o)
+	if err != nil {
+		return ""
+	}
+	return string(res)
+}
