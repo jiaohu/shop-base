@@ -24,6 +24,18 @@ const (
 	OrderPayStatusSuccess = 1  // 支付成功
 )
 
+// 订单支付方式，作为 store_order.pay_type 和相关流水 pay_type 的统一取值。
+const (
+	OrderPayTypeWechatPay        = "wechat_pay"         // 微信支付
+	OrderPayTypeWechatNative     = "wechat_pay_native"  // 微信扫码支付
+	OrderPayTypeAlipay           = "alipay"             // 支付宝支付
+	OrderPayTypeBalance          = "balance_pay"        // 余额支付
+	OrderPayTypeOffline          = "offline_pay"        // 线下支付
+	OrderPayTypeWechatFriend     = "wechat_friend_pay"  // 微信好友支付
+	OrderPayTypeManualConfirmPay = "manual_confirm_pay" // 后台确认支付
+	OrderPayTypeChainPay         = "chain_pay"          // 合约支付
+)
+
 // 主订单售后聚合状态，作为 store_order.after_sales_status 的统一取值。
 // 该状态是明细数量和售后单流程的聚合结果，不是某一张售后单的原始流程状态。
 const (
