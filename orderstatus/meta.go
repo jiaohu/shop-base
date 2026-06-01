@@ -71,10 +71,24 @@ var afterSalesStatusMeta = map[int]StatusMeta{
 	AfterSalesStatusExchangeCompleted:            {Code: AfterSalesStatusExchangeCompleted, Status: "exchange_completed", Text: "换货完成"},
 }
 
+func statusCodeByName(metaMap map[int]StatusMeta, status string) (int, bool) {
+	for _, meta := range metaMap {
+		if meta.Status == status {
+			return meta.Code, true
+		}
+	}
+	return 0, false
+}
+
 // OrderStatusMeta 返回主订单履约状态的展示信息。
 func OrderStatusMeta(code int) (StatusMeta, bool) {
 	meta, ok := orderStatusMeta[code]
 	return meta, ok
+}
+
+// OrderStatusCode 返回主订单履约字符串状态对应的数字状态。
+func OrderStatusCode(status string) (int, bool) {
+	return statusCodeByName(orderStatusMeta, status)
 }
 
 // OrderAfterSalesStatusMeta 返回主订单售后聚合状态的展示信息。
@@ -83,10 +97,20 @@ func OrderAfterSalesStatusMeta(code int) (StatusMeta, bool) {
 	return meta, ok
 }
 
+// OrderAfterSalesStatusCode 返回主订单售后聚合字符串状态对应的数字状态。
+func OrderAfterSalesStatusCode(status string) (int, bool) {
+	return statusCodeByName(orderAfterSalesStatusMeta, status)
+}
+
 // DetailStatusMeta 返回订单明细履约状态的展示信息。
 func DetailStatusMeta(code int) (StatusMeta, bool) {
 	meta, ok := detailStatusMeta[code]
 	return meta, ok
+}
+
+// DetailStatusCode 返回订单明细履约字符串状态对应的数字状态。
+func DetailStatusCode(status string) (int, bool) {
+	return statusCodeByName(detailStatusMeta, status)
 }
 
 // DetailAfterSalesStatusMeta 返回订单明细售后锁状态的展示信息。
@@ -95,8 +119,18 @@ func DetailAfterSalesStatusMeta(code int) (StatusMeta, bool) {
 	return meta, ok
 }
 
+// DetailAfterSalesStatusCode 返回订单明细售后锁字符串状态对应的数字状态。
+func DetailAfterSalesStatusCode(status string) (int, bool) {
+	return statusCodeByName(detailAfterSalesStatusMeta, status)
+}
+
 // AfterSalesStatusMeta 返回售后流程状态的展示信息。
 func AfterSalesStatusMeta(code int) (StatusMeta, bool) {
 	meta, ok := afterSalesStatusMeta[code]
 	return meta, ok
+}
+
+// AfterSalesStatusCode 返回售后流程字符串状态对应的数字状态。
+func AfterSalesStatusCode(status string) (int, bool) {
+	return statusCodeByName(afterSalesStatusMeta, status)
 }
