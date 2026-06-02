@@ -5,6 +5,7 @@ package orderstatus
 type DetailSnapshot struct {
 	Status             int // 明细履约状态
 	Quantity           int // 购买数量
+	Delivered          int // 已发货数量
 	RefundedQuantity   int // 已退款数量
 	ExchangedQuantity  int // 已换货完成数量
 	AfterSalesQuantity int // 当前售后处理中数量
@@ -56,6 +57,7 @@ func CalcOrderStatus(details []DetailSnapshot) int {
 	completed := 0
 	closed := 0
 	pendingPayment := 0
+	partiallyDeliveredPendingShipment := false
 
 	for _, detail := range active {
 		switch detail.Status {
@@ -63,6 +65,9 @@ func CalcOrderStatus(details []DetailSnapshot) int {
 			pendingPayment++
 		case DetailStatusPendingShipment:
 			pendingShipment++
+			if detail.Delivered > 0 {
+				partiallyDeliveredPendingShipment = true
+			}
 		case DetailStatusPendingReceipt:
 			pendingReceipt++
 		case DetailStatusReceived:
@@ -80,8 +85,8 @@ func CalcOrderStatus(details []DetailSnapshot) int {
 	if pendingPayment == total {
 		return OrderStatusPendingPayment
 	}
-	// 待发货和待收货同时存在时，说明订单已经部分发货。
-	if pendingShipment > 0 && pendingReceipt > 0 {
+	// 待发货和待收货同时存在，或单个待发货明细已经有部分发货数量时，说明订单已经部分发货。
+	if pendingShipment > 0 && (pendingReceipt > 0 || partiallyDeliveredPendingShipment) {
 		return OrderStatusPartShipped
 	}
 	if pendingShipment > 0 {
