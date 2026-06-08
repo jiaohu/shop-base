@@ -10,15 +10,16 @@ type StatusMeta struct {
 
 // 主订单履约状态的接口展示映射。
 var orderStatusMeta = map[int]StatusMeta{
-	OrderStatusCanceled:        {Code: OrderStatusCanceled, Status: "canceled", Text: "已取消"},
-	OrderStatusPendingPayment:  {Code: OrderStatusPendingPayment, Status: "pending_payment", Text: "待支付"},
-	OrderStatusPendingShipment: {Code: OrderStatusPendingShipment, Status: "pending_shipment", Text: "待发货"},
-	OrderStatusPartShipped:     {Code: OrderStatusPartShipped, Status: "part_shipped", Text: "部分发货"},
-	OrderStatusPendingReceipt:  {Code: OrderStatusPendingReceipt, Status: "pending_receipt", Text: "待收货"},
-	OrderStatusReceived:        {Code: OrderStatusReceived, Status: "received", Text: "已收货"},
-	OrderStatusPendingComment:  {Code: OrderStatusPendingComment, Status: "pending_comment", Text: "待评价"},
-	OrderStatusCompleted:       {Code: OrderStatusCompleted, Status: "completed", Text: "已完成"},
-	OrderStatusClosed:          {Code: OrderStatusClosed, Status: "closed", Text: "已关闭"},
+	OrderStatusCanceled:         {Code: OrderStatusCanceled, Status: "canceled", Text: "已取消"},
+	OrderStatusPendingPayment:   {Code: OrderStatusPendingPayment, Status: "pending_payment", Text: "待支付"},
+	OrderStatusPendingShipment:  {Code: OrderStatusPendingShipment, Status: "pending_shipment", Text: "待发货"},
+	OrderStatusPartShipped:      {Code: OrderStatusPartShipped, Status: "part_shipped", Text: "部分发货"},
+	OrderStatusPendingReceipt:   {Code: OrderStatusPendingReceipt, Status: "pending_receipt", Text: "待收货"},
+	OrderStatusReceived:         {Code: OrderStatusReceived, Status: "received", Text: "已收货"},
+	OrderStatusPendingComment:   {Code: OrderStatusPendingComment, Status: "pending_comment", Text: "待评价"},
+	OrderStatusCompleted:        {Code: OrderStatusCompleted, Status: "completed", Text: "已完成"},
+	OrderStatusClosed:           {Code: OrderStatusClosed, Status: "closed", Text: "已关闭"},
+	OrderStatusPaymentException: {Code: OrderStatusPaymentException, Status: "payment_exception", Text: "支付异常"},
 }
 
 // 主订单售后聚合状态的接口展示映射。

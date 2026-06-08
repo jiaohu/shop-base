@@ -143,6 +143,61 @@ redis.call('EXPIRE', reservationKey, ttl)
 return 1
 `
 
+const ReclaimReleasedStockScript = `
+local reservationKey = KEYS[1]
+local expireQueueKey = KEYS[2]
+local orderId = ARGV[1]
+local now = ARGV[2]
+local expireAt = ARGV[3]
+
+if redis.call('EXISTS', reservationKey) == 0 then
+  redis.call('ZREM', expireQueueKey, orderId)
+  return 0
+end
+
+local status = redis.call('HGET', reservationKey, 'status')
+if status == 'RESERVED' then
+  redis.call('ZADD', expireQueueKey, expireAt, orderId)
+  return 2
+end
+if status == 'CONFIRMED' then
+  redis.call('ZREM', expireQueueKey, orderId)
+  return 3
+end
+if status ~= 'RELEASED' then
+  redis.call('ZREM', expireQueueKey, orderId)
+  return 0
+end
+
+local itemsJson = redis.call('HGET', reservationKey, 'items')
+if not itemsJson then
+  redis.call('ZREM', expireQueueKey, orderId)
+  return 0
+end
+
+local items = cjson.decode(itemsJson)
+for _, item in ipairs(items) do
+  local stockKey = 'shop:stock:available:' .. tostring(item.sku_id)
+  local current = tonumber(redis.call('GET', stockKey) or '-1')
+  if current < tonumber(item.quantity) then
+    return 4
+  end
+end
+
+for _, item in ipairs(items) do
+  local stockKey = 'shop:stock:available:' .. tostring(item.sku_id)
+  redis.call('DECRBY', stockKey, tonumber(item.quantity))
+end
+
+redis.call('HSET', reservationKey,
+  'status', 'RESERVED',
+  'reclaimed_at', now,
+  'expire_at', expireAt
+)
+redis.call('ZADD', expireQueueKey, expireAt, orderId)
+return 1
+`
+
 type StockItem struct {
 	SkuId    uint64 `json:"sku_id" db:"sku_id"`
 	Quantity uint64 `json:"quantity" db:"quantity"`

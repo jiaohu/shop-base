@@ -5,15 +5,16 @@ import "slices"
 // 主订单履约状态，只表达订单整体从下单到完成的履约进度。
 // 售后、退款、换货不写入该字段，统一由 OrderAfterSalesStatus 表达。
 const (
-	OrderStatusCanceled        = -1 // 已取消
-	OrderStatusPendingPayment  = 0  // 待支付
-	OrderStatusPendingShipment = 10 // 待发货
-	OrderStatusPartShipped     = 20 // 部分发货
-	OrderStatusPendingReceipt  = 30 // 待收货
-	OrderStatusReceived        = 40 // 已收货
-	OrderStatusPendingComment  = 50 // 待评价
-	OrderStatusCompleted       = 60 // 已完成
-	OrderStatusClosed          = 70 // 已关闭，通常用于全部取消或全量售后关闭履约
+	OrderStatusCanceled         = -1 // 已取消
+	OrderStatusPendingPayment   = 0  // 待支付
+	OrderStatusPendingShipment  = 10 // 待发货
+	OrderStatusPartShipped      = 20 // 部分发货
+	OrderStatusPendingReceipt   = 30 // 待收货
+	OrderStatusReceived         = 40 // 已收货
+	OrderStatusPendingComment   = 50 // 待评价
+	OrderStatusCompleted        = 60 // 已完成
+	OrderStatusClosed           = 70 // 已关闭，通常用于全部取消或全量售后关闭履约
+	OrderStatusPaymentException = 80 // 支付异常，通常用于已支付但库存等履约条件无法恢复
 )
 
 // 主订单支付状态，独立于履约状态。
