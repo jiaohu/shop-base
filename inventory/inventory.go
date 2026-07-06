@@ -2,14 +2,18 @@ package inventory
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 )
 
 const (
 	StockAvailableKeyPrefix   = "shop:stock:available:"   // 可用库存的key前缀
+	StockReservedKeyPrefix    = "shop:stock:reserved:"    // SKU维度预占库存的key前缀
 	StockReservationKeyPrefix = "shop:stock:reservation:" // 预占库存的key前缀
 	StockExpireQueueKey       = "shop:stock:expire_queue" // 预占库存过期队列的key, 存过期时间
 	StockReservationTTL       = 30 * 24 * time.Hour
+	OrderPayingKeyPrefix      = "shop:order:paying:" // 订单正在提交链上支付的短期保护key
 )
 
 const (
@@ -46,7 +50,9 @@ end
 
 for _, item in ipairs(items) do
   local stockKey = 'shop:stock:available:' .. tostring(item.sku_id)
+  local reservedKey = 'shop:stock:reserved:' .. tostring(item.sku_id)
   redis.call('DECRBY', stockKey, tonumber(item.quantity))
+  redis.call('INCRBY', reservedKey, tonumber(item.quantity))
 end
 
 redis.call('HSET', reservationKey,
@@ -83,6 +89,19 @@ if status ~= 'RESERVED' then
   redis.call('ZREM', expireQueueKey, orderId)
   return 0
 end
+
+local itemsJson = redis.call('HGET', reservationKey, 'items')
+if itemsJson then
+  local items = cjson.decode(itemsJson)
+  for _, item in ipairs(items) do
+    local reservedKey = 'shop:stock:reserved:' .. tostring(item.sku_id)
+    local remain = redis.call('DECRBY', reservedKey, tonumber(item.quantity))
+    if tonumber(remain) <= 0 then
+      redis.call('DEL', reservedKey)
+    end
+  end
+end
+
 redis.call('HSET', reservationKey, 'status', 'CONFIRMED', 'confirmed_at', now)
 redis.call('ZREM', expireQueueKey, orderId)
 redis.call('EXPIRE', reservationKey, ttl)
@@ -135,7 +154,12 @@ end
 local items = cjson.decode(itemsJson)
 for _, item in ipairs(items) do
   local stockKey = 'shop:stock:available:' .. tostring(item.sku_id)
+  local reservedKey = 'shop:stock:reserved:' .. tostring(item.sku_id)
   redis.call('INCRBY', stockKey, tonumber(item.quantity))
+  local remain = redis.call('DECRBY', reservedKey, tonumber(item.quantity))
+  if tonumber(remain) <= 0 then
+    redis.call('DEL', reservedKey)
+  end
 end
 redis.call('HSET', reservationKey, 'status', 'RELEASED', 'released_at', now)
 redis.call('ZREM', expireQueueKey, orderId)
@@ -186,7 +210,9 @@ end
 
 for _, item in ipairs(items) do
   local stockKey = 'shop:stock:available:' .. tostring(item.sku_id)
+  local reservedKey = 'shop:stock:reserved:' .. tostring(item.sku_id)
   redis.call('DECRBY', stockKey, tonumber(item.quantity))
+  redis.call('INCRBY', reservedKey, tonumber(item.quantity))
 end
 
 redis.call('HSET', reservationKey,
@@ -207,8 +233,30 @@ func AvailableStockKey(skuId uint64) string {
 	return fmt.Sprintf("%s%d", StockAvailableKeyPrefix, skuId)
 }
 
+// ReservedStockKey 返回SKU维度预占库存计数key。
+func ReservedStockKey(skuId uint64) string {
+	return fmt.Sprintf("%s%d", StockReservedKeyPrefix, skuId)
+}
+
+// ParseReservedStockKey 从SKU维度预占库存key解析SKU ID。
+func ParseReservedStockKey(key string) (uint64, bool) {
+	if !strings.HasPrefix(key, StockReservedKeyPrefix) {
+		return 0, false
+	}
+	skuId, err := strconv.ParseUint(strings.TrimPrefix(key, StockReservedKeyPrefix), 10, 64)
+	if err != nil || skuId == 0 {
+		return 0, false
+	}
+	return skuId, true
+}
+
 func ReservationKey(orderId uint64) string {
 	return fmt.Sprintf("%s%d", StockReservationKeyPrefix, orderId)
+}
+
+// OrderPayingKey 返回订单正在提交链上支付时使用的短期保护key。
+func OrderPayingKey(orderId uint64) string {
+	return fmt.Sprintf("%s%d", OrderPayingKeyPrefix, orderId)
 }
 
 func StockReservationTTLSeconds() int64 {
