@@ -39,3 +39,18 @@ func (o OrderReceiptEventData) String() string {
 	}
 	return string(res)
 }
+
+type SettlementCompletedEventData struct {
+	TxHash        string   `json:"txHash"`
+	SettlementIds []uint64 `json:"settlementIds"`
+	CallerAddr    string   `json:"callerAddr"`
+	SettledAt     int64    `json:"settledAt"`
+}
+
+func (s SettlementCompletedEventData) String() string {
+	res, err := json.Marshal(s)
+	if err != nil {
+		return ""
+	}
+	return string(res)
+}
