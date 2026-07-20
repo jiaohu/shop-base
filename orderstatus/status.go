@@ -37,6 +37,13 @@ const (
 	OrderPayTypeChainPay         = "chain_pay"          // 合约支付
 )
 
+// 订单确认收货类型，作为 store_order.confirm_receipt_type 的统一取值。
+const (
+	OrderConfirmReceiptTypeNone          = 0 // 未确认收货
+	OrderConfirmReceiptTypeUser          = 1 // 用户确认收货
+	OrderConfirmReceiptTypePlatformForce = 2 // 平台强制确认收货
+)
+
 // 主订单售后聚合状态，作为 store_order.after_sales_status 的统一取值。
 // 该状态是明细数量和售后单流程的聚合结果，不是某一张售后单的原始流程状态。
 const (
