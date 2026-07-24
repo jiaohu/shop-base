@@ -27,6 +27,12 @@ func (o OrderDetailRefundEventData) String() string {
 	return string(res)
 }
 
+type RefundStockSyncEventData struct {
+	AfterSalesId uint64 `json:"afterSalesId"`
+	SkuId        uint64 `json:"skuId"`
+	Quantity     int    `json:"quantity"`
+}
+
 type OrderReceiptEventData struct {
 	TxHash  string `json:"txHash"`
 	OrderId uint64 `json:"orderId"`
