@@ -74,4 +74,8 @@ const (
 	I_WEB3_STORE_EVENT_SETTLEMENT_COMPLETED = 36
 	// 售后退款完成后同步可售库存缓存事件
 	I_STORE_EVENT_REFUND_STOCK_SYNC = 37
+	// 佣金提现打款请求，由 pay-service-web2 专用 worker 消费
+	I_STORE_EVENT_COMMISSION_WITHDRAWAL_PAYOUT_REQUESTED = 38
+	// 佣金提现打款结果，由 myshop-event 消费
+	I_STORE_EVENT_COMMISSION_WITHDRAWAL_PAYOUT_RESULT = 39
 )
