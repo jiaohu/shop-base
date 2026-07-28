@@ -19,6 +19,7 @@ const (
 
 const (
 	PayoutModeManual = "manual"
+	PayoutModeAlipay = "alipay"
 )
 
 func IsFinal(status int) bool {
