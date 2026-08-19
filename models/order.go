@@ -3,7 +3,10 @@ package models
 import "encoding/json"
 
 type OrderPayEventData struct {
-	TxHash string `json:"txHash"`
+	TxHash              string   `json:"txHash"`
+	OrderIds            []uint64 `json:"orderIds,omitempty"`
+	ExpectedSender      string   `json:"expectedSender,omitempty"`
+	ExpirationTimestamp uint64   `json:"expirationTimestamp,omitempty"`
 }
 
 func (o OrderPayEventData) String() string {
@@ -34,11 +37,32 @@ type RefundStockSyncEventData struct {
 }
 
 type OrderReceiptEventData struct {
-	TxHash  string `json:"txHash"`
-	OrderId uint64 `json:"orderId"`
+	TxHash              string `json:"txHash"`
+	OrderId             uint64 `json:"orderId"`
+	ExpectedSender      string `json:"expectedSender,omitempty"`
+	ExpirationTimestamp uint64 `json:"expirationTimestamp,omitempty"`
 }
 
 func (o OrderReceiptEventData) String() string {
+	res, err := json.Marshal(o)
+	if err != nil {
+		return ""
+	}
+	return string(res)
+}
+
+// ForceConfirmReceiptsEventData records the exact platform force-confirm
+// transaction intent. ExpectedFunction is either force_confirm_receipt or
+// batch_force_confirm_receipts; OrderIds must match the chain events exactly.
+type ForceConfirmReceiptsEventData struct {
+	TxHash              string   `json:"txHash"`
+	OrderIds            []uint64 `json:"orderIds"`
+	ExpectedSender      string   `json:"expectedSender"`
+	ExpectedFunction    string   `json:"expectedFunction"`
+	ExpirationTimestamp uint64   `json:"expirationTimestamp"`
+}
+
+func (o ForceConfirmReceiptsEventData) String() string {
 	res, err := json.Marshal(o)
 	if err != nil {
 		return ""
