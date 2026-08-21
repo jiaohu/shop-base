@@ -82,4 +82,20 @@ const (
 	I_WEB3_REFERRAL_ACCOUNT_SYNC = 40
 	// Web3 平台强制确认收货（支持单笔或批量订单）
 	I_WEB3_STORE_EVENT_FORCE_CONFIRM_RECEIPTS = 41
+	// Web3 结算链上交易恢复。必须在提交 execute_settlements 前持久化。
+	I_WEB3_STORE_EVENT_SETTLEMENT_RECOVERY = 42
+	// Web3 支付 Token 注册表链上交易恢复。
+	I_WEB3_TOKEN_REGISTRY_RECOVERY = 43
+	// Web3 权限管理链上交易恢复。
+	I_WEB3_PERMISSION_RECOVERY = 44
+	// Web3 链上配置变更恢复。
+	I_WEB3_CONFIG_RECOVERY = 45
+	// Web3 商品链上状态变更恢复。
+	I_WEB3_PRODUCT_RECOVERY = 46
+	// Web3 商品上架申请及审批恢复。
+	I_WEB3_LISTING_RECOVERY = 47
+	// Web3 秒杀活动链上状态变更恢复。
+	I_WEB3_FLASH_SALE_RECOVERY = 48
+	// Web3 订单发货链上交易恢复。
+	I_WEB3_ORDER_SHIPMENT_RECOVERY = 49
 )

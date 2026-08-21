@@ -77,6 +77,24 @@ type SettlementCompletedEventData struct {
 	SettledAt     int64    `json:"settledAt"`
 }
 
+// SettlementRecoveryEventData records the exact execute_settlements intent.
+// The consumer verifies the transaction payload and SettlementExecutedEvent
+// records before projecting the transaction into local settlement state.
+type SettlementRecoveryEventData struct {
+	TxHash              string   `json:"txHash"`
+	SettlementIds       []uint64 `json:"settlementIds"`
+	ExpectedSender      string   `json:"expectedSender"`
+	ExpirationTimestamp uint64   `json:"expirationTimestamp"`
+}
+
+func (s SettlementRecoveryEventData) String() string {
+	res, err := json.Marshal(s)
+	if err != nil {
+		return ""
+	}
+	return string(res)
+}
+
 func (s SettlementCompletedEventData) String() string {
 	res, err := json.Marshal(s)
 	if err != nil {

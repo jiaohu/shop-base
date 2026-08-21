@@ -8,8 +8,10 @@ const (
 )
 
 type RegisterByRefferCode struct {
-	TxHash         string `json:"txHash"`
-	RefferedByCode string `json:"refferedByCode"`
+	TxHash              string `json:"txHash"`
+	RefferedByCode      string `json:"refferedByCode"`
+	ExpectedSender      string `json:"expectedSender,omitempty"`
+	ExpirationTimestamp uint64 `json:"expirationTimestamp,omitempty"`
 }
 
 func (r RegisterByRefferCode) String() string {
@@ -24,10 +26,11 @@ func (r RegisterByRefferCode) String() string {
 // referral entry transaction. ReferralCode is populated only for the
 // accept_invitation_by_code entry and is copied from the signed transaction.
 type ReferralAccountSyncEvent struct {
-	TxHash       string `json:"txHash"`
-	Operation    string `json:"operation"`
-	Sender       string `json:"sender"`
-	ReferralCode string `json:"referralCode,omitempty"`
+	TxHash              string `json:"txHash"`
+	Operation           string `json:"operation"`
+	Sender              string `json:"sender"`
+	ReferralCode        string `json:"referralCode,omitempty"`
+	ExpirationTimestamp uint64 `json:"expirationTimestamp"`
 }
 
 func (r ReferralAccountSyncEvent) String() string {

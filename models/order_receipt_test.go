@@ -47,3 +47,19 @@ func TestForceConfirmReceiptsEventDataStringIncludesExactIntent(t *testing.T) {
 		t.Fatalf("unexpected payload: %+v", decoded)
 	}
 }
+
+func TestSettlementRecoveryEventDataStringIncludesExactIntent(t *testing.T) {
+	payload := SettlementRecoveryEventData{
+		TxHash:              "0xabc",
+		SettlementIds:       []uint64{21, 22},
+		ExpectedSender:      "0x3",
+		ExpirationTimestamp: 789,
+	}.String()
+	var decoded SettlementRecoveryEventData
+	if err := json.Unmarshal([]byte(payload), &decoded); err != nil {
+		t.Fatalf("decode payload: %v", err)
+	}
+	if decoded.TxHash != "0xabc" || len(decoded.SettlementIds) != 2 || decoded.ExpectedSender != "0x3" || decoded.ExpirationTimestamp != 789 {
+		t.Fatalf("unexpected payload: %+v", decoded)
+	}
+}

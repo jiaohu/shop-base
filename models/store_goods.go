@@ -18,6 +18,18 @@ func (s StoreGoodsEventData) String() string {
 	return string(res)
 }
 
+type StoreSeckillDeleteEventData struct {
+	Ids []uint64 `json:"ids"`
+}
+
+func (s StoreSeckillDeleteEventData) String() string {
+	res, err := json.Marshal(s)
+	if err != nil {
+		return ""
+	}
+	return string(res)
+}
+
 type StoreGoodsAddReq struct {
 	Name                string                       `json:"name" v:"required#商品名称不能为空" dc:"商品名称"`
 	Summary             string                       `json:"summary"  dc:"商品描述"`
