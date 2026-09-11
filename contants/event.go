@@ -98,4 +98,10 @@ const (
 	I_WEB3_FLASH_SALE_RECOVERY = 48
 	// Web3 订单发货链上交易恢复。
 	I_WEB3_ORDER_SHIPMENT_RECOVERY = 49
+	// 物流服务确认包裹送达；Web2/Web3 各自消费自己的 event_bus。
+	I_SHIPMENT_DELIVERED = 50
+	// 发货事务请求注册物流、订阅回调并关联 shipmentId。
+	I_STORE_ORDER_SHIPMENT_REGISTER = 51
+	// Web3 整单物流送达标记的链上交易恢复。
+	I_WEB3_ORDER_DELIVERED_RECOVERY = 52
 )
