@@ -85,8 +85,8 @@ func CalcOrderStatus(details []DetailSnapshot) int {
 	if pendingPayment == total {
 		return OrderStatusPendingPayment
 	}
-	// 待发货和待收货同时存在，或单个待发货明细已经有部分发货数量时，说明订单已经部分发货。
-	if pendingShipment > 0 && (pendingReceipt > 0 || partiallyDeliveredPendingShipment) {
+	// 已发货明细继续收货、评价后，仍不能把有待发货明细的订单退回“待发货”。
+	if pendingShipment > 0 && (pendingReceipt+received+pendingComment+completed > 0 || partiallyDeliveredPendingShipment) {
 		return OrderStatusPartShipped
 	}
 	if pendingShipment > 0 {
