@@ -108,4 +108,7 @@ const (
 	I_WEB3_DETAIL_STATE_RECOVERY        = 53
 	I_WEB3_REFUND_V2_RECOVERY           = 54
 	I_WEB3_DETAIL_EXTENSION_V2_RECOVERY = 55
+	// Web3 ES maintenance requests, consumed only by the matching search index worker.
+	I_WEB3_ES_GOODS_REBUILD         = 56
+	I_WEB3_ES_SECKILL_GOODS_REBUILD = 57
 )
